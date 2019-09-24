@@ -8,13 +8,14 @@ _Koa app to handle requests from IFTTT._
 Use `.env.example` as a reference.
 
 ```bash
-PORT=8080
+AUTH_TOKEN=changeme
 LOGLEVEL=info
+PORT=8080
 ```
 
 
 ## Running
 
 ```bash
-export (cat .env | xargs) node index.js
+export (cat .env | xargs) node index
 ```
