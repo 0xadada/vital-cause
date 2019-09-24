@@ -1,0 +1,12 @@
+{
+  "name": "vital-cause",
+  "version": "0.0.0",
+  "description": "webhook handler & REST API",
+  "main": "index.js",
+  "author": "0xADADA <0xadada.pub@0xadada.pub>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "koa": "^2.8.1"
+  }
+}
