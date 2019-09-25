@@ -40,6 +40,26 @@ app.use(async (ctx, next) => {
   }
 });
 
+// Healthcheck
+app.use(async (ctx, next) => {
+  if (ctx.path !== `/health`) return next();
+
+  let valid = false;
+
+  if (ctx.headers["content-type"] === "text/plain" &&
+      ctx.request.method === "GET") {
+    valid = true;
+  }
+
+  if (valid) {
+    ctx.status = 200;
+    ctx.body = "OK";
+  } else {
+    ctx.status = 403;
+    ctx.body = "Forbidden";
+  }
+});
+
 // response body
 app.use(async ctx => {
   ctx.body = `200 OK`;
