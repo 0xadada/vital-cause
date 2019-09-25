@@ -6,8 +6,12 @@
   "author": "0xADADA <0xadada.pub@0xadada.pub>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "start": "node ."
+  },
   "dependencies": {
-    "koa": "^2.8.1"
+    "koa": "^2.8.1",
+    "koa-body": "^4.1.1"
   },
   "engines": {
     "node": "^10.14.0"

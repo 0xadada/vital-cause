@@ -1,9 +1,10 @@
 const LOGLEVEL = process.env.LOGLEVEL || "info";
 const PORT = process.env.PORT || 3000;
 const AUTH_TOKEN = process.env.AUTH_TOKEN || null;
-
 const VERSION = require("./package").version;
+
 const Koa = require("koa");
+const koaBody = require("koa-body");
 const Logger = require("./logger");
 
 const app = new Koa();
@@ -14,10 +15,14 @@ app.use(async (ctx, next) => {
   const start = Date.now();
   await next();
   const ms = Date.now() - start;
-  console.debug(`  ${ms}ms`);
+  let log = ms > 1000 ? console.warn : console.debug;
+  log(`  ${ms}ms`);
 });
 
 app.use(logger);
+
+// parse body
+app.use(koaBody());
 
 app.use(async (ctx, next) => {
   await next();
@@ -62,10 +67,14 @@ app.use(async (ctx, next) => {
 
 // response body
 app.use(async ctx => {
-  ctx.body = `200 OK`;
+  let { body } = ctx.request;
   ctx.response.status = 200;
+  ctx.body = `${ctx.response.status} OK
+    POST data:
+      ${JSON.stringify(body)}`;
 });
 
+// bail out if no auth token is provided on boot
 if (AUTH_TOKEN === null) {
   console.log("error, AUTH_TOKEN environment variable must be set.");
   process.exit(1);
