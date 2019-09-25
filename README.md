@@ -10,7 +10,7 @@ Use `.env.example` as a reference.
 ```bash
 AUTH_TOKEN=changeme
 LOGLEVEL=info
-PORT=8080
+PORT=3000
 ```
 
 

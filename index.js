@@ -1,5 +1,5 @@
 const LOGLEVEL = process.env.LOGLEVEL || "info";
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 const AUTH_TOKEN = process.env.AUTH_TOKEN || null;
 
 const VERSION = require("./package").version;
@@ -35,8 +35,8 @@ app.use(async (ctx, next) => {
   if (ctx.query.token && ctx.query.token === AUTH_TOKEN) {
     next();
   } else {
-    ctx.body = "401 Unauthorized";
-    ctx.response.status = 401;
+    ctx.response.status = 403;
+    ctx.body = `${ctx.response.status} Forbidden`;
   }
 });
 
