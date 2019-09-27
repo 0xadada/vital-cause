@@ -33,7 +33,7 @@ module.exports = function post(githubUser, githubRepo) {
         }
       }
 
-      let { date, generator, target, title, content } = body;
+      let { date, generator, target, title, content, vendor } = body;
 
       // prep filename
       let now = new Date(); // UTC time
@@ -50,7 +50,8 @@ module.exports = function post(githubUser, githubRepo) {
         target: target,
         date: `${yyyymmdd} ${hhmm}`,
         generator: generator,
-        content: content || ""
+        content: content || "",
+        vendor
       };
       let filecontents = markdown(context);
 
@@ -112,6 +113,20 @@ generator: ${context.generator}
 hidden: true
 ---
 
-${context.content}
+${context.generator === "twitter.com" ? twitter(context) : context.content}
+`;
+}
+
+function twitter(context) {
+  return `
+<blockquote>
+  <p>
+    ${unescape(context.content)}
+  </p>
+  <cite>‒<span class="p-author p-name">${context.vendor.username}</span>
+    on
+    <a href="${context.target}" rel="external nofollow">${context.date}</a>
+  </cite>
+</blockquote>
 `;
 }
