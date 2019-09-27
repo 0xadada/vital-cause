@@ -7,7 +7,7 @@ module.exports = function health() {
     if (ctx.request.method === "GET") {
       let emoji = randomEmoji();
       console.info(`  OK ${emoji}`);
-      ctx.reponse.status = 200;
+      ctx.response.status = 200;
       ctx.body = `${ctx.response.status} OK`;
     } else {
       ctx.response.status = 400;

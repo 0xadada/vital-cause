@@ -21,19 +21,19 @@ app.use(async (ctx, next) => {
   await next();
   const ms = Date.now() - start;
   let log = ms > 1000 ? console.warn : console.debug;
-  log(`  ${ms}ms`);
+  log(" ", `${ms}ms`);
 });
 
-// log incoming request
+// log request
 app.use(logger);
 
 // parse body
 app.use(koaBody());
 
-// log outgoing request status
+// log response
 app.use(async (ctx, next) => {
   await next();
-  console.info("  ", `${ctx.response.status} ${ctx.response.message}`);
+  console.info(" ", ctx.response.status, ctx.response.message);
 });
 
 // app version
@@ -48,7 +48,7 @@ app.use(async (ctx, next) => {
     next();
   } else {
     ctx.response.status = 403;
-    ctx.reponse.body = `${ctx.response.status} Forbidden`;
+    ctx.response.body = `${ctx.response.status} Forbidden`;
   }
 });
 
