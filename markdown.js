@@ -20,6 +20,8 @@ function renderContent(context) {
       return twitterContent(context);
     case "news.ycombinator.com":
       return hnContent(context);
+    case "spotify.com":
+      return spotifyContent(context);
     default:
       return context.content;
   }
@@ -50,4 +52,8 @@ function hnContent(context) {
 
 <p>${context.content}</p>
 `;
+}
+
+function spotifyContent(context) {
+  return `<img src="${context.vendor.albumCoverUrl}" alt="${context.title}">`;
 }
