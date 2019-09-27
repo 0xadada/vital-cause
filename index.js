@@ -7,6 +7,7 @@ const Koa = require("koa");
 const koaBody = require("koa-body");
 const Logger = require("./logger");
 const health = require("./health");
+const post = require("./post");
 
 const app = new Koa();
 const logger = Logger(LOGLEVEL);
@@ -51,14 +52,8 @@ app.use(async (ctx, next) => {
 // GET /health check
 app.use(health());
 
-// response body
-app.use(async ctx => {
-  let { body } = ctx.request;
-  ctx.response.status = 200;
-  ctx.body = `${ctx.response.status} OK
-    POST data:
-      ${JSON.stringify(body)}`;
-});
+// POST /post
+app.use(post());
 
 // bail out if no auth token is provided on boot
 if (AUTH_TOKEN === null) {
