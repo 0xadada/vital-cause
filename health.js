@@ -7,11 +7,11 @@ module.exports = function health() {
     if (ctx.request.method === "GET") {
       let emoji = randomEmoji();
       console.info(`  OK ${emoji}`);
-      ctx.status = 200;
-      ctx.body = `${ctx.status} OK`;
+      ctx.reponse.status = 200;
+      ctx.body = `${ctx.response.status} OK`;
     } else {
-      ctx.status = 400;
-      ctx.body = `${ctx.status} Bad Request`;
+      ctx.response.status = 400;
+      ctx.body = `${ctx.response.status} Bad Request`;
     }
   };
 };

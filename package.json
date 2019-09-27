@@ -1,7 +1,7 @@
 {
   "name": "vital-cause",
   "version": "0.0.0",
-  "description": "webhook handler & REST API",
+  "description": "Koajs webhook handler & RESTlike API",
   "main": "index.js",
   "author": "0xADADA <0xadada.pub@0xadada.pub>",
   "license": "MIT",
@@ -10,10 +10,11 @@
     "start": "node ."
   },
   "dependencies": {
+    "github": "^12.0.2",
     "koa": "^2.8.1",
     "koa-body": "^4.1.1"
   },
   "engines": {
-    "node": "^10.14.0"
+    "node": ">= 10.16.3"
   }
 }

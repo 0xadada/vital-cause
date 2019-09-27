@@ -1,6 +1,9 @@
 const LOGLEVEL = process.env.LOGLEVEL || "info";
 const PORT = process.env.PORT || 3000;
 const AUTH_TOKEN = process.env.AUTH_TOKEN || null;
+const GITHUB_USER = process.env.GITHUB_USER || null;
+const GITHUB_REPO = process.env.GITHUB_REPO || null;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || null;
 const VERSION = require("./package").version;
 
 const Koa = require("koa");
@@ -30,7 +33,7 @@ app.use(koaBody());
 // log outgoing request status
 app.use(async (ctx, next) => {
   await next();
-  console.info(`  ${ctx.response.status} ${ctx.response.message}`);
+  console.info("  ", `${ctx.response.status} ${ctx.response.message}`);
 });
 
 // app version
@@ -45,19 +48,19 @@ app.use(async (ctx, next) => {
     next();
   } else {
     ctx.response.status = 403;
-    ctx.body = `${ctx.response.status} Forbidden`;
+    ctx.reponse.body = `${ctx.response.status} Forbidden`;
   }
 });
 
-// GET /health check
+// GET /health
 app.use(health());
 
 // POST /post
-app.use(post());
+app.use(post(GITHUB_USER, GITHUB_REPO, GITHUB_TOKEN));
 
-// bail out if no auth token is provided on boot
-if (AUTH_TOKEN === null) {
-  console.log("error, AUTH_TOKEN environment variable must be set.");
+// bail out if any require env vars are missing
+if ([AUTH_TOKEN, GITHUB_USER, GITHUB_REPO, GITHUB_TOKEN].includes(null)) {
+  console.log("error, required environment variable is not set.");
   process.exit(1);
 }
 
