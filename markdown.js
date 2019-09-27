@@ -10,13 +10,20 @@ generator: ${context.generator}
 hidden: true
 ---
 
-${
-  context.generator === "twitter.com"
-    ? twitterContent(context)
-    : context.content
-}
+${renderContent(context)}
 `;
 };
+
+function renderContent(context) {
+  switch (context.generator) {
+    case "twitter.com":
+      return twitterContent(context);
+    case "news.ycombinator.com":
+      return hnContent(context);
+    default:
+      return context.content;
+  }
+}
 
 function twitterContent(context) {
   return `
@@ -29,5 +36,18 @@ function twitterContent(context) {
     <a href="${context.target}" rel="external nofollow">${context.date}</a>
   </cite>
 </blockquote>
+`;
+}
+
+function hnContent(context) {
+  return `
+<blockquote class="p-in-reply-to h-cite">
+  <p class="p-content">${context.vendor.parentText}</p>
+  <cite class="p-author">‒<a href="${context.vendor.parentUrl}"
+      rel="nofollow external">${context.vendor.parentUsername}</a>
+  </cite>
+</blockquote>
+
+<p>${context.content}</p>
 `;
 }
