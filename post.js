@@ -87,7 +87,7 @@ function slugify(string) {
     .trim()
     .toLowerCase()
     .replace(/\ /g, "-")
-    .replace(/[^A-z0-9\-]/g, "");
+    .replace(/[a-z0-9\-]/g, "");
 }
 
 function formatDate(datetime) {
