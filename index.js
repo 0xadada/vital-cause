@@ -6,6 +6,7 @@ const VERSION = require("./package").version;
 const Koa = require("koa");
 const koaBody = require("koa-body");
 const Logger = require("./logger");
+const health = require("./health");
 
 const app = new Koa();
 const logger = Logger(LOGLEVEL);
@@ -19,17 +20,19 @@ app.use(async (ctx, next) => {
   log(`  ${ms}ms`);
 });
 
+// log incoming request
 app.use(logger);
 
 // parse body
 app.use(koaBody());
 
+// log outgoing request status
 app.use(async (ctx, next) => {
   await next();
-  console.info(`  ${ctx.response.status} OK`);
+  console.info(`  ${ctx.response.status} ${ctx.response.message}`);
 });
 
-// version
+// app version
 app.use(async (ctx, next) => {
   ctx.set("X-Server-Version", VERSION);
   next();
@@ -45,25 +48,8 @@ app.use(async (ctx, next) => {
   }
 });
 
-// Healthcheck
-app.use(async (ctx, next) => {
-  if (ctx.path !== `/health`) return next();
-
-  let valid = false;
-
-  if (ctx.headers["content-type"] === "text/plain" &&
-      ctx.request.method === "GET") {
-    valid = true;
-  }
-
-  if (valid) {
-    ctx.status = 200;
-    ctx.body = "OK";
-  } else {
-    ctx.status = 403;
-    ctx.body = "Forbidden";
-  }
-});
+// GET /health check
+app.use(health());
 
 // response body
 app.use(async ctx => {
