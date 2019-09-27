@@ -1,5 +1,5 @@
 const COMMIT_MSG = "new post";
-const MANDATORY_FIELDS = ["date", "generator", "target", "title"];
+const MANDATORY_FIELDS = ["layout", "date", "generator", "target", "title"];
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || null;
 const APPNAME = require("./package").name;
 const VERSION = require("./package").version;
@@ -7,6 +7,8 @@ const USER_AGENT = `${APPNAME} v${VERSION}`;
 
 const Octokit = require("@octokit/rest"); // require("@octokit/rest");
 const randomEmoji = require("./random-emoji");
+const markdown = require("./markdown");
+const { slugify, formatDate, formatTime } = require("./utils");
 const octokit = Octokit({
   auth: GITHUB_TOKEN,
   userAgent: USER_AGENT
@@ -33,7 +35,7 @@ module.exports = function post(githubUser, githubRepo) {
         }
       }
 
-      let { date, generator, target, title, content, vendor } = body;
+      let { layout, date, generator, target, title, content, vendor } = body;
 
       // prep filename
       let now = new Date(); // UTC time
@@ -45,7 +47,7 @@ module.exports = function post(githubUser, githubRepo) {
 
       // prepare context
       let context = {
-        layout: "webmention-like",
+        layout: layout,
         title: title,
         target: target,
         date: `${yyyymmdd} ${hhmm}`,
@@ -81,52 +83,3 @@ module.exports = function post(githubUser, githubRepo) {
     }
   };
 };
-
-function slugify(string) {
-  return string
-    .trim()
-    .toLowerCase()
-    .replace(/\ /g, "-")
-    .replace(/[a-z0-9\-]/g, "");
-}
-
-function formatDate(datetime) {
-  return datetime.toISOString().split("T")[0];
-}
-
-function formatTime(datetime) {
-  return datetime
-    .toISOString()
-    .split("T")[1]
-    .split(".")[0];
-}
-
-function markdown(context) {
-  return `---
-layout: ${context.layout}
-title: >
-  ${context.title}
-target: ${context.target}
-date: ${context.date}
-tags: [webmentions]
-generator: ${context.generator}
-hidden: true
----
-
-${context.generator === "twitter.com" ? twitter(context) : context.content}
-`;
-}
-
-function twitter(context) {
-  return `
-<blockquote>
-  <p>
-    ${unescape(context.content)}
-  </p>
-  <cite>‒<span class="p-author p-name">${context.vendor.username}</span>
-    on
-    <a href="${context.target}" rel="external nofollow">${context.date}</a>
-  </cite>
-</blockquote>
-`;
-}
