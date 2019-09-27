@@ -1,11 +1,18 @@
 const COMMIT_MSG = "new post";
 const MANDATORY_FIELDS = ["date", "generator", "target", "title"];
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || null;
+const APPNAME = require("./package").name;
+const VERSION = require("./package").version;
+const USER_AGENT = `${APPNAME} v${VERSION}`;
 
 const Octokit = require("@octokit/rest"); // require("@octokit/rest");
 const randomEmoji = require("./random-emoji");
-const octokit = Octokit();
+const octokit = Octokit({
+  auth: GITHUB_TOKEN,
+  userAgent: USER_AGENT
+});
 
-module.exports = function post(githubUser, githubRepo, githubToken) {
+module.exports = function post(githubUser, githubRepo) {
   return async function post(ctx, next) {
     if (ctx.path !== `/post`) return next();
 
@@ -48,11 +55,7 @@ module.exports = function post(githubUser, githubRepo, githubToken) {
       let filecontents = markdown(context);
 
       try {
-        octokit.authenticate({
-          type: "oauth",
-          token: githubToken
-        });
-        octokit.repos.createFile({
+        octokit.repos.createOrUpdateFile({
           owner: githubUser,
           repo: githubRepo,
           path: filename,
@@ -68,8 +71,8 @@ module.exports = function post(githubUser, githubRepo, githubToken) {
       }
       ctx.response.status = 200;
       ctx.response.body = filecontents;
-      console.info(` ${title}`);
-      console.debug(` date: ${date}`);
+      console.info(" ", title);
+      console.debug(" ", date);
       console.log(filecontents);
     } else {
       ctx.response.status = 400;
