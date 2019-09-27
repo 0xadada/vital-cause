@@ -1,7 +1,7 @@
 const COMMIT_MSG = "new post";
 const MANDATORY_FIELDS = ["date", "generator", "target", "title"];
 
-const Octokit = require("github"); // require("@octokit/rest");
+const Octokit = require("@octokit/rest"); // require("@octokit/rest");
 const randomEmoji = require("./random-emoji");
 const octokit = Octokit();
 
