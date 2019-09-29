@@ -55,5 +55,9 @@ function hnContent(context) {
 }
 
 function spotifyContent(context) {
-  return `<img src="${context.vendor.albumCoverUrl}" alt="${context.title}">`;
+  return `
+<a href="${context.target}" title="context.title" rel="external noopener nofollow">
+  <img src="${context.vendor.albumCoverUrl}" alt="${context.title}">
+</a>
+`;
 }

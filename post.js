@@ -42,7 +42,10 @@ module.exports = function post(githubUser, githubRepo) {
       now.setUTCHours(now.getUTCHours() - 4); // set time to America/New_York
       let yyyymmdd = formatDate(now);
       let hhmm = formatTime(now);
-      let slug = slugify(title);
+      let slug = slugify(title)
+        .split("-")
+        .slice(0, 9)
+        .join("-"); // max 9 words
       let filename = `_posts/${yyyymmdd}-${slug}.md`;
 
       // prepare context
