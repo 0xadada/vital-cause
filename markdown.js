@@ -31,7 +31,7 @@ function render(context) {
 
 function twitterContent(context) {
   return `
-<blockquote>
+<blockquote class="external-citation">
   <p>
     ${unescape(sanitize(context.content))}
   </p>
@@ -45,7 +45,7 @@ function twitterContent(context) {
 
 function hnContent(context) {
   return `
-<blockquote class="p-in-reply-to h-cite">
+<blockquote class="p-in-reply-to h-cite external-citation">
   <p class="p-content">${sanitize(context.vendor.parentText)}</p>
   <cite class="p-author">‒<a href="${context.vendor.parentUrl}"
       rel="nofollow external">${context.vendor.parentUsername}</a>
