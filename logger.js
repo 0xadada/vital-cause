@@ -1,3 +1,4 @@
+/*global process*/
 const LOGLEVEL = process.env.LOGLEVEL || "info";
 
 module.exports = function Logger(
