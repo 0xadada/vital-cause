@@ -1,4 +1,4 @@
-const LOGLEVEL = process.env.LOGLEVEL || "info";
+const LOGLEVEL = process.env.LOGLEVEL || 'info';
 
 module.exports = function Logger(
   logLevel = LOGLEVEL,
@@ -7,10 +7,10 @@ module.exports = function Logger(
   return async function(ctx, next) {
     const dt = new Date();
     const str = format
-      .replace(":loglevel", logLevel.toUpperCase())
-      .replace(":datetime", dt.toISOString())
-      .replace(":method", ctx.method)
-      .replace(":url", ctx.url);
+      .replace(':loglevel', logLevel.toUpperCase())
+      .replace(':datetime', dt.toISOString())
+      .replace(':method', ctx.method)
+      .replace(':url', ctx.url);
     console[logLevel](`${str}`);
     await next();
   };

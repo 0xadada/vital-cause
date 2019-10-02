@@ -1,7 +1,7 @@
-const sanitize = require("sanitize-html");
+const sanitize = require('sanitize-html');
 
 module.exports = function markdown(context) {
-  let cleanTitle = sanitize(context.title.replace(/(\r\n|\n|\r)/gm, ""));
+  let cleanTitle = sanitize(context.title.replace(/(\r\n|\n|\r)/gm, ''));
   return `---
 layout: ${context.layout}
 title: >
@@ -18,11 +18,11 @@ ${render(context)}`;
 
 function render(context) {
   switch (context.generator) {
-    case "twitter.com":
+    case 'twitter.com':
       return twitterContent(context);
-    case "news.ycombinator.com":
+    case 'news.ycombinator.com':
       return hnContent(context);
-    case "spotify.com":
+    case 'spotify.com':
       return spotifyContent(context);
     default:
       return sanitize(context.content);

@@ -10,7 +10,7 @@ const EMOJI = {
   expression: [0x1f910, 0x1f92f]
 };
 
-module.exports = function randomEmoji(type = "emoticons") {
+module.exports = function randomEmoji(type = 'emoticons') {
   let [max, min] = EMOJI[type];
   let codePoint = Math.floor(Math.random() * (max - min) + min);
   return String.fromCodePoint(codePoint);
