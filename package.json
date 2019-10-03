@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node .",
     "lint": "yarn eslint .",
-    "lint:fix": "yarn eslint . --fix"
+    "lint:fix": "yarn eslint . --fix",
+    "test": "ava"
   },
   "dependencies": {
     "@octokit/rest": "^16.30.1",
@@ -25,6 +26,7 @@
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "ava": "^2.4.0"
   }
 }
