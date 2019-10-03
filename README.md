@@ -15,7 +15,6 @@ You'll need these tools installed
 ```bash
 git clone <repository-url> && cd vital-cause
 yarn
-cp .env.example .env
 ```
 
 ## Environment variables
@@ -24,7 +23,7 @@ Set your environment variables, copy them from the `.env.example` file and edit
 as necessary:
 
 ```bash
-cp .env.example .env`
+cp .env.example .env
 ```
 
 `AUTH_TOKEN` acts as an API token, all requests must send the `?token=` query
@@ -52,11 +51,11 @@ This will run the server on port `3000` with the `.env` file settings.
 export (cat .env | xargs) && node index
 ```
 
-Now running, you can make requests; make sure to send the `token` query parameter
-as set in the `AUTH_TOKEN` environment variable in the `.env` file.
+There are 2 endpoints available to make requests. You must send send the `token`
+query parameter equal to the value set in the `AUTH_TOKEN` environment variable.
 
 * health check: `curl -i http://localhost:3000/health?token=changeme`
-* post new file: `curl -i http://localhost:3000/post?token=changeme`
+* post new file: `curl -i -H 'Content-Type: application/json' http://localhost:3000/post?token=changeme`
 
 
 ## Example posts
@@ -89,11 +88,12 @@ curl \
 On IFTTT, the recipe would look like this:
 
 Make a web hook request:
-```
-URL: https://<project-name>.glitch.me/post?token=changeme
-Method: POST
-Content-type: application/json
-Body:
+
+* URL: `https://<project-name>.glitch.me/post?token=changeme`
+* Method: `POST`
+* Content-type: `application/json`
+* Body:
+```JSON
 {
   "layout": "webmention-like",
   "date": "{{LikedAt}}",
