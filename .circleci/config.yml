@@ -1,9 +1,8 @@
 version: 2
 jobs:
   build:
-    docker:
-      # Utilizing the Long term support node version (LTS)
-      - image: circleci/node:lts
+    docker:                              # CircleCI tags: https://circleci.com/docs/2.0/docker-image-tags.json
+      - image: circleci/node:10-browsers # Node tags: https://nodejs.org/en/download/releases/
     steps:
       - checkout
 
@@ -14,12 +13,16 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yarn install
+      - run: yarn
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
-      - run: yarn test
+      - run:
+          name: Lint
+          command: yarn lint
+      - run:
+          name: Test
+          command: yarn test
