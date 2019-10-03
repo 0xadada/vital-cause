@@ -1,65 +1,62 @@
-const sanitize = require('sanitize-html');
+const Handlebars = require('handlebars');
 
-module.exports = function markdown(context) {
-  let cleanTitle = sanitize(context.title.replace(/(\r\n|\n|\r)/gm, ''));
-  return `---
-layout: ${context.layout}
-title: >
-  ${cleanTitle}
-target: ${context.target}
-date: ${context.date}
-tags: [webmentions]
-generator: ${context.generator}
+const TEMPLATE = `---
 hidden: true
+layout: {{layout}}
+title: {{title}}
+target: {{target}}
+date: {{date}}
+tags: [webmentions]
+generator: {{generator}}
 ---
 
-${render(context)}`;
-};
 
-function render(context) {
-  switch (context.generator) {
-    case 'twitter.com':
-      return twitterContent(context);
-    case 'news.ycombinator.com':
-      return hnContent(context);
-    case 'spotify.com':
-      return spotifyContent(context);
-    default:
-      return sanitize(context.content);
-  }
-}
+{{#equals generator "app.getpocket.com"}}
+{{content}}
+{{/equals}}
 
-function twitterContent(context) {
-  return `
+{{#equals generator "twitter.com"}}
 <blockquote class="external-citation">
   <p>
-    ${unescape(sanitize(context.content))}
+    {{content}}
   </p>
-  <cite>‒<span class="p-author p-name">${context.vendor.username}</span>
+  <cite>‒<span class="p-author p-name">{{vendor.username}}</span>
     on
-    <a href="${context.target}" rel="external nofollow">${context.date}</a>
+    <a href="{{target}}" rel="external nofollow" target="_blank">{{date}}</a>
   </cite>
 </blockquote>
-`;
-}
+{{/equals}}
 
-function hnContent(context) {
-  return `
+{{#equals generator 'news.ycombinator.com'}}
 <blockquote class="p-in-reply-to h-cite external-citation">
-  <p class="p-content">${sanitize(context.vendor.parentText)}</p>
-  <cite class="p-author">‒<a href="${context.vendor.parentUrl}"
-      rel="nofollow external">${context.vendor.parentUsername}</a>
+  <p class="p-content">{{vendor.parentText}}</p>
+  <cite class="p-author">‒<a href="{{vendor.parentUrl}}"
+    rel="nofollow external noopener" target="_blank">{{vendor.parentUsername}}</a>
   </cite>
 </blockquote>
+{{/equals}}
 
-<p>${sanitize(context.content)}</p>
-`;
-}
-
-function spotifyContent(context) {
-  return `
-<a href="${context.target}" title="context.title" rel="external noopener nofollow">
-  <img src="${context.vendor.albumCoverUrl}" alt="${context.title}">
+{{#equals generator "spotify.com"}}
+<a href="{{target}}" title="{{title}}" rel="external noopener nofollow" target="_blank">
+  <img src="{{vendor.albumCoverUrl}}" alt="{{title}}">
 </a>
+{{/equals}}
+
+{{#equals generator "youtube.com"}}
+{{{content}}}
+{{/equals}}
 `;
-}
+
+module.exports = function markdown(context) {
+  // remove line-breaks from title
+  context.title = context.title.replace(/(\r\n|\n|\r)/gm, '');
+
+  // create an `{{#equals}}` helper
+  Handlebars.registerHelper('equals', function(arg1, arg2, options) {
+    return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+  });
+
+  // render the template
+  let render = Handlebars.compile(TEMPLATE);
+  return render(context);
+};
