@@ -1,4 +1,6 @@
-# vital-cause
+# vital-cause 
+[![CircleCI](https://circleci.com/gh/0xadada/vital-cause/tree/master.svg?style=svg)](https://circleci.com/gh/0xadada/vital-cause/tree/master)
+
 
 _Koa app to handle requests from IFTTT._
 
@@ -19,3 +21,4 @@ PORT=3000
 ```bash
 export (cat .env | xargs) node index
 ```
+
