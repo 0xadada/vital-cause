@@ -13,7 +13,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yarn
+      - run: echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc && npm install
 
       - save_cache:
           paths:
@@ -22,7 +22,7 @@ jobs:
 
       - run:
           name: Lint
-          command: yarn lint
+          command: npm run lint
       - run:
           name: Test
-          command: yarn test
+          command: npm run test

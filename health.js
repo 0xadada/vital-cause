@@ -1,4 +1,4 @@
-const randomEmoji = require('./random-emoji');
+const randomEmoji = require('@0xadada/random-emoji');
 
 module.exports = function health() {
   return async function health(ctx, next) {

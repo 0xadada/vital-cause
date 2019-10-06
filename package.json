@@ -1,6 +1,6 @@
 {
   "name": "vital-cause",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Koajs webhook handler & RESTlike API",
   "main": "index.js",
   "author": "0xADADA <0xadada.pub@0xadada.pub>",
@@ -13,11 +13,11 @@
     "test": "ava"
   },
   "dependencies": {
+    "@0xadada/random-emoji": "^1.0.0",
     "@octokit/rest": "^16.30.1",
     "handlebars": "^4.4.2",
     "koa": "^2.8.1",
-    "koa-body": "^4.1.1",
-    "sanitize-html": "^1.20.1"
+    "koa-body": "^4.1.1"
   },
   "engines": {
     "node": ">= 10.16.0"

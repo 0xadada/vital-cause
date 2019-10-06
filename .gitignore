@@ -1,4 +1,4 @@
 .env
-node_modules
-package-lock.json
 .tool-versions
+yarn.lock
+node_modules

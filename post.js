@@ -6,7 +6,7 @@ const VERSION = require('./package').version;
 const USER_AGENT = `${APPNAME} v${VERSION}`;
 
 const Octokit = require('@octokit/rest'); // require("@octokit/rest");
-const randomEmoji = require('./random-emoji');
+const randomEmoji = require('@0xadada/random-emoji');
 const markdown = require('./markdown');
 const { slugify, formatDate, formatTime } = require('./utils');
 const octokit = Octokit({
