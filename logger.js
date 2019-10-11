@@ -6,11 +6,12 @@ module.exports = function Logger(
 ) {
   return async function(ctx, next) {
     const dt = new Date();
+    const url = ctx.url.replace(/token=([^&]*)/, 'token=█████');
     const str = format
       .replace(':loglevel', logLevel.toUpperCase())
       .replace(':datetime', dt.toISOString())
       .replace(':method', ctx.method)
-      .replace(':url', ctx.url);
+      .replace(':url', url);
     console[logLevel](`${str}`);
     await next();
   };

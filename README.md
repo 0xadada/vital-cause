@@ -48,7 +48,7 @@ to create new files in your repo. It *only* needs to be granted the
 This will run the server on port `3000` with the `.env` file settings.
 
 ```bash
-export (cat .env | xargs) && node index
+export $(cat .env | xargs) && node index
 ```
 
 There are 2 endpoints available to make requests. You must send send the `token`
