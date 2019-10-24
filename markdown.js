@@ -34,6 +34,7 @@ generator: {{generator}}
     rel="nofollow external noopener" target="_blank">{{vendor.parentUsername}}</a>
   </cite>
 </blockquote>
+{{content}}
 {{/equals}}
 
 {{#equals generator "spotify.com"}}
