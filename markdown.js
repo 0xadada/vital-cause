@@ -1,13 +1,13 @@
 const Handlebars = require('handlebars');
 
 const TEMPLATE = `---
-hidden: true
 layout: {{layout}}
 title: "{{title}}"
 target: {{target}}
 date: {{date}}
 tags: [webmentions]
 generator: {{generator}}
+webmention: true
 ---
 
 

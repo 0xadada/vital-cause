@@ -46,7 +46,7 @@ module.exports = function post(githubUser, githubRepo) {
         .split('-')
         .slice(0, 9)
         .join('-'); // max 9 words
-      let filename = `_posts/${yyyymmdd}-${slug}.md`;
+      let filename = `webmentions/${yyyymmdd}-${slug}.md`;
 
       // prepare context
       let context = {
